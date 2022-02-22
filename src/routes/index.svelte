@@ -1,2 +1,19 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script>
+  // imports
+  import { Table, Th, Thead } from '@components';
+
+  // props (internal)
+  const columns = [
+    'Date',
+    'Usage (kWh)',
+    'Charge',
+  ]
+</script>
+
+<Table>
+  <Thead>
+    {#each columns as column}
+      <Th>{column}</Th>
+    {/each}
+  </Thead>
+</Table>
