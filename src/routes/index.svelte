@@ -1,6 +1,6 @@
 <script>
   // imports
-  import { Table, Th, Thead } from '@components';
+  import { OverflowContainer, Table, Th, Thead } from '@components';
 
   // props (internal)
   const columns = [
@@ -10,6 +10,7 @@
   ]
 </script>
 
+<OverflowContainer>
 <Table>
   <Thead>
     {#each columns as column}
@@ -17,3 +18,4 @@
     {/each}
   </Thead>
 </Table>
+</OverflowContainer>
