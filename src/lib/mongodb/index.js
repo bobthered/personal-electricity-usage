@@ -10,7 +10,6 @@ const uri = process.env['MONGO_URI']
   .replace('{{MONGO_DB}}', db)
   .replace('{{MONGO_USERNAME}}', username)
   .replace('{{MONGO_PASSWORD}}', password);
-console.log({uri})
 const options = {
   useUnifiedTopology: true,
   useNewUrlParser: true,
