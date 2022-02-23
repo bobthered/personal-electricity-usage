@@ -9,7 +9,9 @@ const config = {
 		vite: {
 			resolve: {
 				alias: {
-					'@components' : path.resolve('./src/components')
+					'@components' : path.resolve('./src/components'),
+					'@lib' : path.resolve('./src/lib'),
+					'@routes' : path.resolve('./src/routes')
 				}
 			}
 		}
