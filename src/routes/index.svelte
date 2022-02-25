@@ -49,6 +49,10 @@
   const toggleModal = () => (show = !show);
   
   // utilities
+  const mapDocs = (row, i, arr) => {
+    row.rolling12MonthUsage = i < 11 ? undefined : [...arr].filter((_,j)=>(i - j >= 0) && (j > i - 12)).reduce((acc, cur) => acc + +cur.usage, 0);
+    return row;
+  }
   const sortDocs = (a, b) => {
     if (+a.year < +b.year) return -1;
     if (+a.year > +b.year) return 1;
@@ -59,7 +63,7 @@
 
   // props (internal)
   let charge = '0.00';
-  const columns = ['Month', 'Year', 'Usage (kWh)', 'Charge', 'Water Heater'];
+  const columns = ['Month', 'Year', 'Usage (kWh)', 'Charge', 'Water Heater', 'Rolling 12 Month Usage (kWh)'];
   const currency = new Intl.NumberFormat(undefined, {
     currency: 'USD',
     style: 'currency',
@@ -76,7 +80,7 @@
   let year = moment().format('YYYY');
 
   // props (dynamic)
-  $: rows = [...docs].sort(sortDocs)
+  $: rows = [...docs].sort(sortDocs).map(mapDocs)
 
   // lifecycle
   onMount(async () => {
