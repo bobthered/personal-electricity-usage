@@ -13,6 +13,7 @@
     Modal,
     OverflowContainer,
     Overlay,
+    SafeArea,
     Select,
     Table,
     Tbody,
@@ -89,30 +90,33 @@
   <title>Personal Electricy Usage</title>
 </svelte:head>
 
-<OverflowContainer class="p-[1rem] max-h-screen">
-  <Table>
-    <Thead>
-      {#each columns as column}
-        <Th>{column}</Th>
-      {/each}
-    </Thead>
-    <Tbody>
-      {#each rows as row}
-        <Tr>
-          <Td class='text-right'>{row.month}</Td>
-          <Td class='text-right'>{row.year}</Td>
-          <Td class='text-right'>{(+row.usage).toLocaleString('en-US')}</Td>
-          <Td class='text-right'>{currency.format(row.charge)}</Td>
-          <Td>{row.waterHeater}</Td>
-        </Tr>
-      {/each}
-    </Tbody>
-  </Table>
-</OverflowContainer>
+<SafeArea class='relative p-[1rem]'>
+  <OverflowContainer class="pb-[3.5rem]">
+    <Table>
+      <Thead>
+        {#each columns as column}
+          <Th>{column}</Th>
+        {/each}
+      </Thead>
+      <Tbody>
+        {#each rows as row, i}
+          <Tr>
+            <Td class='text-right'>{row.month}</Td>
+            <Td class='text-right'>{row.year}</Td>
+            <Td class='text-right'>{(+row.usage).toLocaleString('en-US')}</Td>
+            <Td class='text-right'>{currency.format(row.charge)}</Td>
+            <Td>{row.waterHeater}</Td>
+            <Td class='text-right'>{row.rolling12MonthUsage === undefined ? 'N/A' : row.rolling12MonthUsage.toLocaleString('en-US')}</Td>
+          </Tr>
+        {/each}
+      </Tbody>
+    </Table>
+  </OverflowContainer>
 
-<Button class="absolute bottom-[1rem] right-[1rem] p-[1rem] rounded-full" on:click={toggleModal}>
-  <Icon src={Plus} />
-</Button>
+  <Button class="absolute bottom-[1rem] right-[1rem] p-[1rem] rounded-full" on:click={toggleModal}>
+    <Icon src={Plus} />
+  </Button>
+</SafeArea>
 
 <Modal bind:show class="p-[1rem]">
   <Overlay on:click={toggleModal} />
