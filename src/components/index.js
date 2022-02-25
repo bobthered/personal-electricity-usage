@@ -7,6 +7,7 @@ export { default as Input } from './Input.svelte'
 export { default as Modal } from './Modal.svelte'
 export { default as OverflowContainer } from './OverflowContainer.svelte'
 export { default as Overlay } from './Overlay.svelte'
+export { default as SafeArea } from './SafeArea.svelte'
 export { default as Select } from './Select.svelte'
 export { default as Table } from './Table.svelte';
 export { default as Tbody } from './Tbody.svelte';
