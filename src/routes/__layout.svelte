@@ -2,7 +2,6 @@
 	import '../app.css';
 </script>
 
-<div class="bg-gray-900 text-white min-h-screen min-w-screen relative">
-	
-<slot />
+<div class="bg-gray-900 text-white flex flex-col">
+	<slot />
 </div>
