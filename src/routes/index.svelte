@@ -6,6 +6,7 @@
   import {
     Button,
     Card,
+    Chart,
     Fieldset,
     Form,
     Icon,
@@ -47,40 +48,52 @@
     toggleModal();
   };
   const toggleModal = () => (show = !show);
-  
+
   // utilities
   const mapDocs = (row, i, arr) => {
-    row.rolling12MonthUsage = i < 11 ? undefined : [...arr].filter((_,j)=>(i - j >= 0) && (j > i - 12)).reduce((acc, cur) => acc + +cur.usage, 0);
+    row.rolling12MonthUsage =
+      i < 11
+        ? undefined
+        : [...arr]
+            .filter((_, j) => i - j >= 0 && j > i - 12)
+            .reduce((acc, cur) => acc + +cur.usage, 0);
     return row;
-  }
+  };
   const sortDocs = (a, b) => {
     if (+a.year < +b.year) return -1;
     if (+a.year > +b.year) return 1;
     if (+a.month < +b.month) return -1;
     if (+a.month > +b.month) return 1;
     return 0;
-  }
+  };
 
   // props (internal)
   let charge = '0.00';
-  const columns = ['Month', 'Year', 'Usage (kWh)', 'Charge', 'Water Heater', 'Rolling 12 Month Usage (kWh)'];
+  const columns = [
+    'Month',
+    'Year',
+    'Usage (kWh)',
+    'Charge',
+    'Water Heater',
+    'Rolling 12 Month Usage (kWh)',
+  ];
   const currency = new Intl.NumberFormat(undefined, {
     currency: 'USD',
     style: 'currency',
-  })
+  });
   let docs = [];
   let month = moment().format('M');
   let show = false;
   let usage = 0;
   let waterHeater = 'Electric Heat Pump - 2020';
   let waterHeaterOptions = [
-    { label: 'Electric - 1995', value: 'Electric - 1995'},
-    { label: 'Electric Heat Pump - 2020', value: 'Electric Heat Pump - 2020'},
-  ]
+    { label: 'Electric - 1995', value: 'Electric - 1995' },
+    { label: 'Electric Heat Pump - 2020', value: 'Electric Heat Pump - 2020' },
+  ];
   let year = moment().format('YYYY');
 
   // props (dynamic)
-  $: rows = [...docs].sort(sortDocs).map(mapDocs)
+  $: rows = [...docs].sort(sortDocs).map(mapDocs);
 
   // lifecycle
   onMount(async () => {
@@ -94,7 +107,7 @@
   <title>Personal Electricy Usage</title>
 </svelte:head>
 
-<SafeArea class='relative p-[1rem]'>
+<SafeArea class="relative p-[1rem]">
   <OverflowContainer class="pb-[3.5rem]">
     <Table>
       <Thead>
@@ -105,12 +118,16 @@
       <Tbody>
         {#each rows as row, i}
           <Tr>
-            <Td class='text-right'>{row.month}</Td>
-            <Td class='text-right'>{row.year}</Td>
-            <Td class='text-right'>{(+row.usage).toLocaleString('en-US')}</Td>
-            <Td class='text-right'>{currency.format(row.charge)}</Td>
+            <Td class="text-right">{row.month}</Td>
+            <Td class="text-right">{row.year}</Td>
+            <Td class="text-right">{(+row.usage).toLocaleString('en-US')}</Td>
+            <Td class="text-right">{currency.format(row.charge)}</Td>
             <Td>{row.waterHeater}</Td>
-            <Td class='text-right'>{row.rolling12MonthUsage === undefined ? 'N/A' : row.rolling12MonthUsage.toLocaleString('en-US')}</Td>
+            <Td class="text-right">
+              {row.rolling12MonthUsage === undefined
+                ? 'N/A'
+                : row.rolling12MonthUsage.toLocaleString('en-US')}
+            </Td>
           </Tr>
         {/each}
       </Tbody>
