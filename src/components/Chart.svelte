@@ -1,36 +1,33 @@
 <script>
-  // imports
   import { onMount } from 'svelte';
-  import { chart } from 'svelte-apexcharts';
-  import { twMerge } from 'tailwind-merge';
 
-  // props (internal)
+  export let options;
+
+  let ApexCharts;
   let loaded = false;
 
-  // props (external)
-  export let colors = ['rgba(34,197,94,1)'];
-  export let series = [];
-  export let toolbar = {
-    show: false
+  const chart = (node, options) => {
+    if (!loaded) return;
+
+    const myChart = new ApexCharts(node, options);
+    myChart.render();
+
+    return {
+      update(options) {
+        myChart.updateOptions(options);
+      },
+      destroy() {
+        myChart.destroy();
+      },
+    };
   };
-  export let type = 'line';
-  export let xaxis = {}
 
-  // props (dynamic)
-  $: options = {
-    chart : {
-      toolbar,
-      type
-    },
-    colors,
-    series,
-    xaxis
-  }
-
-  // lifecycle
-  onMount(() => {
+  onMount(async () => {
+    const module = await import('apexcharts');
+    ApexCharts = module.default;
+    window.ApexCharts = ApexCharts;
     loaded = true;
-  })
+  });
 </script>
 
 {#if loaded}

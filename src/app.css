@@ -1,11 +1,10 @@
-/* Write your global styles here, in PostCSS syntax */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 nav {
   padding-bottom: env(safe-area-inset-bottom);
 }
 .safe-area {
-  padding: env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left);
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
