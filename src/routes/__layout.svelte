@@ -1,7 +1,14 @@
 <script>
-	import '../app.css';
+  // imports
+  import { Main, Nav } from '@components';
+  import '../app.css';
 </script>
 
-<div class="bg-gray-900 text-white flex flex-col">
-	<slot />
-</div>
+<Main>
+  <div class="flex flex-col flex-grow safe-area overflow-hidden">
+    <div class="flex flex-col flex-grow overflow-y-auto">
+      <slot />
+    </div>
+  </div>
+  <Nav />
+</Main>
