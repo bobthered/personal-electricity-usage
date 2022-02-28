@@ -12,7 +12,7 @@
   <select
     bind:value
     class={twMerge(
-      'bg-transparent appearance-none rounded px-[1rem] py-[.5rem] transition duration-200 outline-none ring ring-transparent ring-offset-1 ring-offset-white/[.3] focus:ring-offset-green-500 cursor-pointer w-full',
+      'bg-transparent appearance-none rounded px-[1rem] py-[.5rem] transition duration-200 outline-none ring ring-transparent ring-offset-1 ring-offset-gray-500 focus:ring-offset-green-500 cursor-pointer w-full',
       $$props.class,
     )}
   >
