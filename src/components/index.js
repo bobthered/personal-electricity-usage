@@ -1,5 +1,6 @@
 export { default as Button } from './Button.svelte'
 export { default as Card } from './Card.svelte'
+export { default as Chart } from './Chart.svelte'
 export { default as Fieldset } from './Fieldset.svelte'
 export { default as Form } from './Form.svelte'
 export { default as Icon } from './Icon.svelte'

@@ -6,6 +6,7 @@
   import {
     Button,
     Card,
+    Chart,
     Fieldset,
     Form,
     Icon,
@@ -75,6 +76,18 @@
   let year = moment().format('YYYY');
 
   // props (dynamic)
+  $: chartOptions = {
+    series: [
+      {
+        name: 'Usage',
+        data: [...rows].map(({ usage }) => +usage)
+      }
+    ],
+    type: 'line',
+    xaxis: {
+      categories: [...rows].map(({ month, year}) => `${year}-${month}`)
+    }
+  }
   $: rows = [...docs].sort(sortDocs)
 
   // lifecycle
@@ -90,6 +103,7 @@
 </svelte:head>
 
 <OverflowContainer class="p-[1rem] max-h-screen">
+  <Chart {...chartOptions} />
   <Table>
     <Thead>
       {#each columns as column}
