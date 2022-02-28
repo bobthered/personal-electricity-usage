@@ -118,6 +118,7 @@
           <Td class='text-right'>{(+row.usage).toLocaleString('en-US')}</Td>
           <Td class='text-right'>{currency.format(row.charge)}</Td>
           <Td>{row.waterHeater}</Td>
+          // TODO add 12 month rolling Usage
         </Tr>
       {/each}
     </Tbody>
