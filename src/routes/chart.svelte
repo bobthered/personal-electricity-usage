@@ -1,6 +1,6 @@
 <script>
   // imports
-  import { Chart } from '@components';
+  import { Chart, OverflowContainer } from '@components';
   import { data } from '@stores';
 
   // props (dynamic)
@@ -31,6 +31,6 @@
   }
 </script>
 
-<div class="flex flex-col p-[1rem] flex-grow">
+<OverflowContainer class="flex flex-col p-[1rem] flex-grow">
   <Chart {options} />
-</div>
+</OverflowContainer>

@@ -1,7 +1,14 @@
 <script>
   // imports
+  import { Trash, X } from 'svelte-hero-icons';
   import {
+    Button,
+    Card,
+    H6,
+    Icon,
+    Modal,
     OverflowContainer,
+    Overlay,
     Table,
     Tbody,
     Td,
@@ -10,6 +17,28 @@
     Tr,
   } from '@components';
   import { data } from '@stores';
+
+  // handlers
+  const deleteHandler = async () => {
+    // initiate body
+    const body = { _id };
+
+    // initiate fetch options
+    const options = {
+      body: JSON.stringify(body),
+      method: 'DELETE'
+    }
+
+    // send fetch
+    const response = await fetch('./api', options);
+    const { doc } = await response.json();
+
+    // update store
+    $data = [...$data].filter(({_id}) => _id !== doc._id);
+
+    // toggle modal
+    toggleModal();
+  }
 
   // utilities
   const mapDocs = (row, i, arr) => {
@@ -29,9 +58,12 @@
     if (+a.month > +b.month) return 1;
     return 0;
   };
+  const toggleModal = () => show = !show;
 
   // props (internal)
+  let _id = undefined;
   const columns = [
+    '',
     'Month',
     'Year',
     'Usage (kWh)',
@@ -44,6 +76,7 @@
     currency: 'USD',
     style: 'currency',
   });
+  let show = false;
 
   // props (dynamic)
   $: rows = [...$data].sort(sortDocs).map(mapDocs);
@@ -63,6 +96,7 @@
     <Tbody>
       {#each rows as row, i}
         <Tr>
+          <Td class='px-0 py-0'><Button on:click={() => {_id = row._id; toggleModal()}} class='bg-transparent hover:bg-transparent focus:bg-transparent p-[.5rem] text-red-500 hover:text-red-600 focus:text-red-600 focus:ring-red-500/30'><Icon src={Trash} /></Button></Td>
           <Td class="text-right">{row.month}</Td>
           <Td class="text-right">{row.year}</Td>
           <Td class="text-right">{(+row.usage).toLocaleString('en-US')}</Td>
@@ -79,3 +113,17 @@
     </Tbody>
   </Table>
 </OverflowContainer>
+
+<Modal class="p-[1rem]" {show}>
+  <Overlay on:click={toggleModal} />
+  <Card class="relative w-full items-center max-w-lg">
+    <div class="flex justify-end items-center w-full">
+      <Button class='px-[.5rem] bg-transparent hover:bg-transparent focus:bg-transparent focus:ring-white/30' on:click={toggleModal}><Icon src={X} /></Button>
+    </div>
+    <H6>Are you sure?</H6>
+    <div class="flex space-x-[1rem] mt-[2rem] w-full">
+      <Button on:click={toggleModal} class="flex-grow bg-transparent hover:bg-transparent focus:bg-transparent ring-offset-2 ring-offset-white">Cancel</Button>
+      <Button on:click={deleteHandler} class="flex-grow bg-red-500 hover:bg-red-600 focus:bg-red-600 focus:ring-red-500/30">Delete</Button>
+    </div>
+  </Card>
+</Modal>

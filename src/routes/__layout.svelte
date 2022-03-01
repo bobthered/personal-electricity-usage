@@ -1,7 +1,7 @@
 <script>
   // imports
   import { onMount } from 'svelte';
-  import { Main, Nav } from '@components';
+  import { Main, Nav, SafeArea } from '@components';
   import { data } from '@stores';
   import '../app.css';
 
@@ -14,10 +14,10 @@
 </script>
 
 <Main>
-  <div class="flex flex-col flex-grow safe-area pb-0 overflow-hidden">
+  <SafeArea>
     <div class="flex flex-col flex-grow overflow-hidden">
       <slot />
     </div>
-  </div>
+  </SafeArea>
   <Nav />
 </Main>

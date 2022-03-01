@@ -1,7 +1,8 @@
 <script>
   // imports
   import moment from 'moment';
-  import { Button, Fieldset, Form, Input, Select } from '@components';
+  import { X } from 'svelte-hero-icons';
+  import { Button, Card, Fieldset, Form, H6, Icon, Input, Modal, OverflowContainer, Overlay, Select } from '@components';
   import { data } from '@stores';
 
   // handlers
@@ -16,21 +17,29 @@
     };
 
     // send fetch
-    await fetch('./api', options);
+    const response = await fetch('./api', options);
+    const { doc } = await response.json();
 
     // update store
-    $data = [...$data, body]
+    $data = [...$data, doc]
   };
   const submitHandler = async (e) => {
     e.preventDefault();
 
     // post to ./api endpoint
     await post();
+
+    // toggle modal
+    toggleModal();
   };
+
+  // utilities
+  const toggleModal = () => show = !show;
 
   // props (internal)
   let charge = '0.00';
   let month = moment().format('M');
+  let show = false;
   let usage = 0;
   let waterHeater = 'Electric Heat Pump - 2020';
   let waterHeaterOptions = [
@@ -40,9 +49,9 @@
   let year = moment().format('YYYY');
 </script>
 
-<div class="flex flex-col p-[1rem] flex-grow max-w-lg">
+<OverflowContainer class="flex flex-col p-[1rem] flex-grow max-w-lg">
   <div class="flex justify-between items-center mb-[1rem]">
-    <h6 class="font-bold text-[1.5rem]">Add Data</h6>
+    <H6>Add Data</H6>
   </div>
   <Form class="flex-grow" on:submit={submitHandler}>
     <div class="flex flex-col flex-grow space-y-[1rem] lg:flex-grow-0">
@@ -64,4 +73,17 @@
     </div>
     <Button type="submit">Submit</Button>
   </Form>
-</div>
+</OverflowContainer>
+
+<Modal class="p-[1rem]" {show}>
+  <Overlay on:click={toggleModal} />
+  <Card class="relative w-full items-center max-w-lg">
+    <div class="flex justify-end items-center w-full">
+      <Button class='px-[.5rem] bg-transparent hover:bg-transparent focus:bg-transparent focus:ring-white/30' on:click={toggleModal}><Icon src={X} /></Button>
+    </div>
+    <H6>Successfully added data!</H6>
+    <div class="flex space-x-[1rem] mt-[2rem] w-full justify-end">
+      <Button class="flex-grow lg:flex-grow-0" on:click={toggleModal}>Continue</Button>
+    </div>
+  </Card>
+</Modal>
